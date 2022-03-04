@@ -4,7 +4,7 @@ from telegram.ext import Updater, CommandHandler, CallbackContext
 import logging
 import windfinder
 
-TOKEN = "5271274756:AAF4EKNmqIFCLDAbsb6Bn0yYCjPoMIWZUx8"
+TOKEN = ""
 location = "weston_southampton"
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
