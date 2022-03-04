@@ -3,8 +3,15 @@ from telegram.ext import Updater, CommandHandler, CallbackContext
 
 import logging
 import windfinder
+import os
 
-TOKEN = "5271274756:AAF4EKNmqIFCLDAbsb6Bn0yYCjPoMIWZUx8"
+from dotenv import load_dotenv
+
+load_dotenv()
+
+TOKEN = os.getenv("TOKEN")
+chat_id = os.getenv("chat_id")
+
 location = "weston_southampton"
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
@@ -23,13 +30,6 @@ def remove_job_if_exists(name: str, context: CallbackContext):
         job.schedule_removal()
 
 
-def start(update: Update, context: CallbackContext):
-    chat_id = update.message.chat_id
-    context.job_queue.run_repeating(windfinderBot, 10, context=chat_id, name=str(chat_id))  # Windfinder
-
-    update.message.reply_text('Starting')
-
-
 def stop(update: Update, context: CallbackContext):
     chat_id = update.message.chat_id
     remove_job_if_exists(str(chat_id), context)
@@ -39,13 +39,16 @@ def stop(update: Update, context: CallbackContext):
 
 def main():
     updater = Updater(TOKEN)
+    job = updater.job_queue
 
     dispatcher = updater.dispatcher
 
-    dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(CommandHandler("stop", stop))
 
     updater.start_polling()
+
+    job.run_repeating(windfinderBot, 10, context=chat_id, name=str(chat_id))  # Windfinder
+
     updater.idle()
 
 
