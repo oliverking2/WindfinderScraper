@@ -30,13 +30,8 @@ def remove_job(name: str, context: CallbackContext):
         job.schedule_removal()
 
 
-def start(update: Update, context: CallbackContext):
-    context.job_queue.run_daily(windfinderBot, datetime.time(hour=8), context=chat_id, name=str(chat_id))  # Windfinder
-
-    update.message.reply_text('Starting')
-
-
 def stop(update: Update, context: CallbackContext):
+    # chat_id = update.message.chat_id
     remove_job(str(chat_id), context)
 
     update.message.reply_text("Stopping")
@@ -44,15 +39,12 @@ def stop(update: Update, context: CallbackContext):
 
 def main():
     updater = Updater(TOKEN)
-    job = updater.job_queue
 
     dispatcher = updater.dispatcher
-
-    dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(CommandHandler("stop", stop))
 
+    updater.job_queue.run_daily(windfinderBot, datetime.time(hour=8), context=chat_id, name=str(chat_id))  # Windfinder
     updater.start_polling()
-
     updater.idle()
 
 
