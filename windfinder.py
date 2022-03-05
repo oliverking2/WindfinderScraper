@@ -157,8 +157,18 @@ def analyseForecast(forecast):
                         base, gust = forecast[day]["base"][earlyIndex:lateIndex], forecast[day]["gust"][earlyIndex:lateIndex]
                         baseChange, gustChange, baseLow, baseHigh, gustLow, gustHigh, average = analyseWind(base, gust)
 
-                        date = " ".join([day, ":", timeEarly.strftime('%H:%M'), "-", timeLate.strftime('%H:%M')])
-                        sessionDetails = " ".join(["Session Length:", ":".join(str(sessionLength).split(":")[:2])])
+                        date = "** " + " ".join([day, ":", timeEarly.strftime('%H:%M'), "-", timeLate.strftime('%H:%M')]) + " **"
+                        sessionTime = str(sessionLength).split(":")[:2]
+                        if sessionTime[1] == "00":
+                            sessionDetails = " ".join(
+                                ["Session Length:", sessionTime[0], "hours"])
+                        else:
+                            if sessionTime[0] == "1":
+                                sessionDetails = " ".join(
+                                    ["Session Length:", sessionTime[0], "hour", sessionTime[1], "minutes"])
+                            else:
+                                sessionDetails = " ".join(
+                                    ["Session Length:", sessionTime[0], "hours", sessionTime[1], "minutes"])
 
                         if 6 < baseHigh < 22:
                             # print(baseChange, gustChange, baseLow, baseHigh, gustLow, gustHigh)
@@ -206,7 +216,7 @@ def analyseForecast(forecast):
                         else:
                             print("Conditions not suitable")
 
-                        analysedForecast.append([date, tideTimeText, sessionDetails, forecastText])
+                        analysedForecast.append([date, " \u2022  " + tideTimeText, " \u2022  " + sessionDetails, " \u2022  " + forecastText])
     return analysedForecast
 
 
