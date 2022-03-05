@@ -19,6 +19,7 @@ def postToGroup(group):
     graph = GraphAPI(access_token=facebookAccessToken)
 
     graph.put_object(group, "feed", message=message, link=link)
+    print("Posted")
 
 postToGroup(pageID)
 
