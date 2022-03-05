@@ -3,6 +3,7 @@ import windfinder
 
 from facebook import GraphAPI
 from dotenv import load_dotenv
+from datetime import datetime
 
 load_dotenv()
 facebookAccessToken = os.getenv("facebookAccessToken")
@@ -19,7 +20,7 @@ def postToGroup(group):
     graph = GraphAPI(access_token=facebookAccessToken)
 
     graph.put_object(group, "feed", message=message, link=link)
-    print("Posted")
+    print("Posted" + datetime.today().strftime('%Y-%m-%d'))
 
 postToGroup(pageID)
 
