@@ -9,6 +9,7 @@ TO DO LIST
 - create graphs of wind
 - account for sunrise/sunset
 - careful in larger tides, e.g. 4.8 at 11:50, sail till 14:20?
+- smaller tides allows for longer sail?
 """
 
 
@@ -127,7 +128,7 @@ def getForecast(location):
 
 def analyseForecast(forecast):
     analysedForecast = []
-    for day in forecast:
+    for indexDay, day in enumerate(forecast):
         tideTimes, tideType = forecast[day]["tidetimes"]
         for indexTide, tideTime in enumerate(tideTimes):
             if tideType[indexTide] == "high":
@@ -214,9 +215,14 @@ def analyseForecast(forecast):
                             else:
                                 print("Error: unknown weather data")
                         else:
-                            print("Conditions not suitable")
+                            if indexDay > 2:
+                                forecastText = "Conditions not currently suitable but check again closer to the time"
+                            else:
+                                forecastText = "Conditions not suitable"
 
-                        analysedForecast.append([date, " \u2022  " + tideTimeText, " \u2022  " + sessionDetails, " \u2022  " + forecastText])
+                        analysedForecast.append([date, " \u2022  " + tideTimeText, " \u2022  " + sessionDetails,
+                                                 " \u2022  " + forecastText])
+
     return analysedForecast
 
 
